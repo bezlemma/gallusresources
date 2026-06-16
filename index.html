@@ -47,7 +47,7 @@
   nav{display:flex;align-items:center;gap:30px;height:70px}
   .brand{display:flex;align-items:center;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.12rem;
     letter-spacing:-.02em;white-space:nowrap;color:#fff}
-  .navlinks{display:flex;gap:26px;align-items:center}
+  .navlinks{display:flex;gap:26px;align-items:center;position:relative;z-index:40}
   .navlinks a{font-size:.93rem;color:rgba(255,255,255,.88);font-weight:500;transition:color .15s}
   .navlinks a:hover{color:#fff}
   .nav-cta{margin-left:auto;position:relative;z-index:40}
@@ -62,17 +62,19 @@
   .nav-toggle span{display:block;width:24px;height:2.5px;background:#fff}
 
   /* ---------- Hero ---------- */
-  .hero{position:relative;overflow:visible;padding:76px 0 48px;min-height:540px}
-  .hero-grid{display:grid;grid-template-columns:1fr;max-width:600px}
+  .hero{position:relative;overflow:visible;padding:64px 0 28px;min-height:380px}
+  .hero-grid{display:grid;grid-template-columns:1fr;max-width:min(560px,50%)}
   .hero h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:700;max-width:15ch}
   .hero h1 .b{color:var(--accent)}
   .hero p.lead{font-size:clamp(1.05rem,1.5vw,1.26rem);color:var(--muted);max-width:44ch;margin:24px 0 34px}
   .hero-cta{display:flex;gap:16px;flex-wrap:wrap}
-  .hero-chicken{position:absolute;right:4%;top:-84px;height:600px;width:auto;z-index:30;pointer-events:none;
+  /* Anchor to the content column's right edge, then shift left 130px so the hen's
+     head clears the Order eggs button (the head sits near the image's right side). */
+  .hero-chicken{position:absolute;right:calc(max(0px,(100% - var(--maxw)) / 2) + 130px);top:-56px;height:440px;width:auto;z-index:30;pointer-events:none;
     filter:drop-shadow(-6px 10px 10px rgba(0,0,0,.12))}
 
   /* ---------- Sections ---------- */
-  section{padding:72px 0}
+  section{padding:64px 0}
   .sec-head{max-width:660px;margin-bottom:50px}
   .sec-head h2{font-size:clamp(1.9rem,3.6vw,2.8rem)}
   .sec-head p{color:var(--muted);margin-top:16px;font-size:1.08rem}
@@ -88,6 +90,7 @@
   .line .thumb{position:relative;aspect-ratio:4/3;border-bottom:2px solid var(--ink);background:#fff;
     display:flex;align-items:center;justify-content:center;overflow:hidden}
   .line .thumb.photo img{width:100%;height:100%;object-fit:cover}
+  .line .thumb.dark{background:#02110a}
   .line .body{padding:30px 30px 32px;display:flex;flex-direction:column;flex:1}
   .status{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
     font-weight:700;padding:6px 12px;border:2px solid var(--ink);width:fit-content;margin-bottom:16px}
@@ -227,13 +230,13 @@
         <div class="body">
           <span class="status live"><span class="dot"></span>Available now</span>
           <h3>Wildtype Red Star</h3>
-          <p>Our robust foundation flock that provide the genetic background for every transgenic line we maintain.</p>
+          <p>The foundation flock that provides the genetic background for every transgenic line we maintain.</p>
         </div>
       </article>
 
       <!-- Cytoplasmic Green -->
       <article class="line">
-        <div class="thumb"></div>
+        <div class="thumb photo dark"><img src="CytoExample2.png" alt="Fluorescence micrograph of the chicken heart expressing cytoplasmic GFP" loading="lazy" /></div>
         <div class="body">
           <span class="status soon"><span class="dot"></span>Coming soon</span>
           <h3>Cytoplasmic Green</h3>
