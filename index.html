@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Gallus Genetics Resource Center — transgenic chicken lines &amp; eggs for research</title>
 <meta name="description" content="A Connecticut nonprofit that maintains transgenic chicken lines and supplies fertilized eggs to research laboratories." />
-<meta name="theme-color" content="#ffffff" />
+<meta name="theme-color" content="#007FFF" />
 <meta property="og:title" content="Gallus Genetics Resource Center" />
 <meta property="og:description" content="Transgenic chicken lines and fertilized research eggs, maintained by a Connecticut nonprofit." />
 <meta property="og:type" content="website" />
@@ -17,10 +17,12 @@
   :root{
     --paper:#ffffff;
     --ink:#000000;
-    --blue:#007FFF;
-    --blue-ink:#0067cf;
-    --orange:#FF6A14;
-    --green:#15a64a;
+    /* Palette swapped: orange is now the primary accent, blue the secondary pop. */
+    --accent:#FF6A14;       /* primary accent (was blue) */
+    --accent-ink:#d2520a;   /* darker orange for accent text */
+    --accent-soft:#fff2e9;  /* light orange tint */
+    --pop:#007FFF;          /* secondary pop + top bar (was orange) */
+    --pop-soft:#eaf4ff;     /* light blue tint */
     --muted:#5a5a5a;
     --maxw:1140px;
   }
@@ -37,89 +39,77 @@
   h1,h2,h3,.display{font-family:"Space Grotesk",sans-serif;font-weight:600;line-height:1.05;letter-spacing:-.02em}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
 
-  /* ---------- Nav (static so the comb can crest over it) ---------- */
-  header{position:relative;z-index:20;background:var(--paper);border-bottom:2px solid var(--ink)}
+  /* ---------- Nav (blue top bar) ---------- */
+  /* No z-index here: the header must NOT form its own stacking context, so the
+     Order eggs button (z-index:40) can paint above the cresting chicken (z-index:30). */
+  header{position:relative;background:var(--pop);border-bottom:2px solid var(--ink)}
   nav{display:flex;align-items:center;gap:30px;height:70px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.12rem;letter-spacing:-.02em;white-space:nowrap}
-  .brand .mark{width:32px;height:32px;flex:none}
+  .brand{display:flex;align-items:center;font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.12rem;
+    letter-spacing:-.02em;white-space:nowrap;color:#fff}
   .navlinks{display:flex;gap:26px;align-items:center}
-  .navlinks a{font-size:.93rem;color:var(--ink);font-weight:500;transition:color .15s}
-  .navlinks a:hover{color:var(--blue-ink)}
-  .nav-cta{margin-left:auto}
-  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;
+  .navlinks a{font-size:.93rem;color:rgba(255,255,255,.88);font-weight:500;transition:color .15s}
+  .navlinks a:hover{color:#fff}
+  .nav-cta{margin-left:auto;position:relative;z-index:40}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#000;
     padding:11px 22px;border:2px solid var(--ink);border-radius:0;font-size:.92rem;font-weight:600;
     box-shadow:3px 3px 0 var(--ink);transition:transform .12s ease,box-shadow .12s ease;cursor:pointer}
   .btn:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
   .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
   .btn.ghost{background:var(--paper);color:var(--ink)}
-  .nav-toggle{display:none;background:none;border:0;cursor:pointer}
+  /* z-index:40 keeps the hamburger above the cresting chicken (z-index:30), like the CTA. */
+  .nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:6px;position:relative;z-index:40}
+  .nav-toggle span{display:block;width:24px;height:2.5px;background:#fff}
 
   /* ---------- Hero ---------- */
-  .hero{position:relative;overflow:visible;padding:72px 0 84px}
+  .hero{position:relative;overflow:visible;padding:76px 0 48px;min-height:540px}
   .hero-grid{display:grid;grid-template-columns:1fr;max-width:600px}
-  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--blue-ink);font-weight:600;margin-bottom:22px}
-  .eyebrow::before{content:"";width:26px;height:2px;background:var(--orange)}
   .hero h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:700;max-width:15ch}
-  .hero h1 .b{color:var(--blue)}
-  .hero h1 .u{box-shadow:inset 0 -.16em 0 var(--orange)}
+  .hero h1 .b{color:var(--accent)}
   .hero p.lead{font-size:clamp(1.05rem,1.5vw,1.26rem);color:var(--muted);max-width:44ch;margin:24px 0 34px}
   .hero-cta{display:flex;gap:16px;flex-wrap:wrap}
-  .hero-chicken{position:absolute;right:4%;top:-92px;height:600px;width:auto;z-index:30;pointer-events:none;
+  .hero-chicken{position:absolute;right:4%;top:-84px;height:600px;width:auto;z-index:30;pointer-events:none;
     filter:drop-shadow(-6px 10px 10px rgba(0,0,0,.12))}
 
   /* ---------- Sections ---------- */
-  section{padding:84px 0}
+  section{padding:72px 0}
   .sec-head{max-width:660px;margin-bottom:50px}
-  .sec-head .eyebrow{margin-bottom:16px}
   .sec-head h2{font-size:clamp(1.9rem,3.6vw,2.8rem)}
   .sec-head p{color:var(--muted);margin-top:16px;font-size:1.08rem}
-
-  /* ---------- Mission (dark + dithered) ---------- */
-  .mission{position:relative;overflow:hidden;background:var(--ink);color:var(--paper);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
-  .mission-bg{position:absolute;inset:0;width:100%;height:100%;opacity:.4;z-index:0}
-  .mission .wrap{position:relative;z-index:1}
-  .mission .eyebrow{color:#fff}
-  .mission .eyebrow::before{background:var(--orange)}
-  .mission-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:54px;align-items:center}
-  .mission h2{font-size:clamp(1.8rem,3.2vw,2.5rem);margin-bottom:20px}
-  .mission p{color:#d2d2d2;font-size:1.08rem;margin-bottom:16px}
-  .facts{display:grid;grid-template-columns:1fr;border:2px solid #fff;background:var(--ink)}
-  .fact{padding:20px 24px;border-bottom:2px solid #fff;display:flex;align-items:baseline;gap:16px}
-  .fact:last-child{border-bottom:0}
-  .fact .k{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.5rem;color:var(--blue);line-height:1.1;min-width:5.5em}
-  .fact .v{font-size:.96rem;color:#d2d2d2}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600;margin-bottom:16px}
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--pop)}
 
   /* ---------- Lines ---------- */
   .lines-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
   .line{border:2px solid var(--ink);box-shadow:8px 8px 0 var(--ink);background:var(--paper);overflow:hidden;
     transition:transform .18s ease,box-shadow .18s ease;display:flex;flex-direction:column}
   .line:hover{transform:translate(-2px,-2px);box-shadow:12px 12px 0 var(--ink)}
-  .line .thumb{position:relative;height:210px;border-bottom:2px solid var(--ink);background:#f3f3f3;display:flex;align-items:center;justify-content:center}
-  .line .thumb.avail{background:#eaf4ff}
-  .line .thumb svg{width:62%;height:auto}
+  .line .thumb{position:relative;aspect-ratio:4/3;border-bottom:2px solid var(--ink);background:#fff;
+    display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .line .thumb.photo img{width:100%;height:100%;object-fit:cover}
   .line .body{padding:30px 30px 32px;display:flex;flex-direction:column;flex:1}
   .status{display:inline-flex;align-items:center;gap:8px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
     font-weight:700;padding:6px 12px;border:2px solid var(--ink);width:fit-content;margin-bottom:16px}
-  .status.live{background:var(--blue);color:#fff}
-  .status.soon{background:var(--orange);color:#000}
+  .status.live{background:var(--accent);color:#000}
+  .status.soon{background:var(--pop);color:#fff}
   .status .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
   .line h3{font-size:1.45rem;margin-bottom:8px}
-  .line p{color:var(--muted);font-size:1rem;margin-bottom:18px;flex:1}
-  .line .meta{font-size:.82rem;color:var(--ink);font-weight:600;border-top:2px solid #ececec;padding-top:14px}
+  .line p{color:var(--muted);font-size:1rem;margin-bottom:0;flex:1}
 
-  /* ---------- Ordering ---------- */
+  /* ---------- Ordering (light-blue band for rhythm) ---------- */
+  #ordering{background:var(--pop-soft);border-top:2px solid var(--ink)}
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-  .step{border:2px solid var(--ink);padding:30px 26px;background:var(--paper);box-shadow:6px 6px 0 var(--ink)}
-  .step .n{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.1rem;width:40px;height:40px;border:2px solid var(--ink);
-    display:flex;align-items:center;justify-content:center;background:var(--blue);color:#fff;margin-bottom:18px}
+  .step{border:2px solid var(--ink);padding:30px 26px;background:var(--paper);box-shadow:6px 6px 0 var(--ink);
+    transition:transform .18s ease,box-shadow .18s ease}
+  .step:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--ink)}
+  .step .n{font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:1.1rem;width:40px;height:40px;
+    border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;background:var(--accent);color:#000;margin-bottom:18px}
   .step h3{font-size:1.2rem;margin-bottom:8px}
   .step p{color:var(--muted);font-size:.98rem}
 
   /* ---------- Contact ---------- */
-  .contact{background:#eaf4ff;border-top:2px solid var(--ink)}
+  .contact{background:var(--accent-soft);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
   .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
   .contact h2{font-size:clamp(1.9rem,3.4vw,2.6rem);margin-bottom:18px}
   .contact p{color:var(--muted);font-size:1.08rem;margin-bottom:28px;max-width:42ch}
@@ -128,29 +118,60 @@
   .contact-art img{max-width:100%;height:auto;max-height:340px;filter:drop-shadow(-6px 10px 10px rgba(0,0,0,.12))}
 
   /* ---------- Footer ---------- */
-  footer{padding:60px 0 40px;border-top:2px solid var(--ink)}
-  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap}
-  .foot-brand{max-width:34ch}
+  footer{padding:56px 0 40px}
+  .foot-brand{max-width:42ch}
+  .foot-brand .brand{color:var(--ink)}
   .foot-brand p{color:var(--muted);margin-top:14px;font-size:.95rem}
-  .foot-col h4{font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:700}
-  .foot-col a{display:block;color:var(--ink);font-size:.95rem;margin-bottom:10px;font-weight:500;transition:color .15s}
-  .foot-col a:hover{color:var(--blue-ink)}
-  .foot-bottom{margin-top:46px;padding-top:22px;border-top:2px solid var(--ink);
+  .foot-bottom{margin-top:40px;padding-top:22px;border-top:2px solid var(--ink);
     display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.85rem}
 
   @media(max-width:860px){
     .navlinks{display:none}
     .nav-cta{display:none}
-    .nav-toggle{display:block;margin-left:auto}
-    .hero{padding:48px 0 56px}
-    .hero-grid{max-width:none}
-    .hero-chicken{position:static;display:block;height:300px;margin:28px auto 0;right:auto;top:auto}
-    .mission-grid{grid-template-columns:1fr;gap:32px}
-    .lines-grid{grid-template-columns:1fr}
-    .steps{grid-template-columns:1fr}
-    .contact-grid{grid-template-columns:1fr;gap:28px}
-    .contact-art{order:-1}
-    section{padding:60px 0}
+    .nav-toggle{display:flex;margin-left:auto}
+    section{padding:48px 0}
+
+    .hero{padding:32px 0 28px;min-height:320px}
+    .hero h1{font-size:clamp(1.95rem,6vw,3rem)}
+    .hero p.lead{margin:18px 0 26px}
+    .hero-grid{max-width:54%}
+    /* Hen on the right, comb cresting over the banner with the head kept just left
+       of the hamburger. translateY(-2.6% …) pins the comb in the bar at any size. */
+    .hero-chicken{position:absolute;right:48px;top:0;
+      transform:translateY(calc(-2.6% - 44px));
+      height:clamp(230px,44vw,360px);width:auto;margin:0;z-index:30}
+
+    .sec-head{margin-bottom:28px}
+
+    /* Catalog stays a 2×2 grid on mobile */
+    .lines-grid{grid-template-columns:1fr 1fr;gap:14px}
+    .line{box-shadow:5px 5px 0 var(--ink)}
+    .line:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+    .line .body{padding:16px 16px 18px}
+    .line h3{font-size:1.05rem;margin-bottom:6px}
+    .line p{font-size:.85rem;line-height:1.45}
+    .status{font-size:.6rem;padding:5px 9px;margin-bottom:12px}
+
+    .steps{grid-template-columns:1fr;gap:16px}
+
+    /* Contact: text on the left, hen on the right (kept side-by-side, compact) */
+    .contact-grid{grid-template-columns:1.3fr .7fr;gap:16px;align-items:center}
+    .contact-art{order:0}
+    .contact-art img{max-height:175px}
+    .contact h2{font-size:clamp(1.5rem,5.4vw,2.1rem)}
+    .contact p{margin-bottom:18px}
+    .contact .email-btn{font-size:clamp(.74rem,3vw,1rem);padding:10px 14px}
+  }
+
+  @media(max-width:520px){
+    /* Phones: smaller hen, comb crests just over the bar's lower edge (clear of the
+       hamburger), giving the hero text more width. */
+    .hero{min-height:auto;padding:24px 0 24px}
+    .hero-grid{max-width:60%}
+    .hero-chicken{right:8px;transform:translateY(calc(-2.6% - 12px));height:clamp(180px,50vw,230px)}
+    .line h3{font-size:.98rem}
+    .line p{font-size:.8rem}
+    .contact-art img{max-height:145px}
   }
 </style>
 </head>
@@ -159,23 +180,15 @@
 <header>
   <div class="wrap">
     <nav>
-      <a class="brand" href="#top">
-        <svg class="mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="1.5" y="1.5" width="37" height="37" fill="#000"/>
-          <ellipse cx="20" cy="21.5" rx="10.5" ry="13" fill="#fff"/>
-          <circle cx="24.5" cy="15.5" r="3.1" fill="#007FFF"/>
-        </svg>
-        Gallus Genetic Resource Center
-      </a>
+      <a class="brand" href="#top">Gallus Genetic Resource Center</a>
       <div class="navlinks">
-        <a href="#mission">About</a>
         <a href="#lines">Lines</a>
         <a href="#ordering">Ordering</a>
         <a href="#contact">Contact</a>
       </div>
       <a class="btn nav-cta" href="#contact">Order eggs</a>
       <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('lines').scrollIntoView()">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.4"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <span></span><span></span><span></span>
       </button>
     </nav>
   </div>
@@ -185,7 +198,6 @@
 <section class="hero">
   <div class="wrap">
     <div class="hero-grid">
-      <span class="eyebrow"></span>
       <h1>Chicken lines, <span class="b">for research</span>.</h1>
       <p class="lead">Gallus Genetics Resource Center maintains chicken lines and ships fertilized eggs to laboratories in the USA.</p>
       <div class="hero-cta">
@@ -202,19 +214,15 @@
     <div class="sec-head">
       <span class="eyebrow">The catalog</span>
       <h2>Lines</h2>
-      <p>Need something not listed? Tell us what your project requires and we can make it with you!</p>
+      <p>Need a new line? Tell us what your project requires and we can make it with you!</p>
     </div>
 
     <div class="lines-grid">
 
       <!-- Wildtype Red Star -->
       <article class="line">
-        <div class="thumb avail">
-          <svg viewBox="0 0 200 150" aria-hidden="true">
-            <ellipse cx="100" cy="82" rx="40" ry="52" fill="#e8c79a" stroke="#000" stroke-width="4"/>
-            <ellipse cx="86" cy="60" rx="12" ry="16" fill="#fff" opacity=".55"/>
-            <path d="M150 30 l6.5 13.5 14.8 2-10.8 10.4 2.7 14.7-13.2-7-13.2 7 2.7-14.7-10.8-10.4 14.8-2z" fill="#e23b2e" stroke="#000" stroke-width="3" stroke-linejoin="round"/>
-          </svg>
+        <div class="thumb photo">
+          <img src="RedStar.jpg" alt="Watercolor illustration of a Red Star hen" loading="lazy" />
         </div>
         <div class="body">
           <span class="status live"><span class="dot"></span>Available now</span>
@@ -225,12 +233,7 @@
 
       <!-- Cytoplasmic Green -->
       <article class="line">
-        <div class="thumb">
-          <svg viewBox="0 0 200 150" aria-hidden="true">
-            <circle cx="100" cy="75" r="56" fill="#15a64a" fill-opacity=".5" stroke="#000" stroke-width="4"/>
-            <circle cx="100" cy="75" r="20" fill="#fff" stroke="#000" stroke-width="3"/>
-          </svg>
-        </div>
+        <div class="thumb"></div>
         <div class="body">
           <span class="status soon"><span class="dot"></span>Coming soon</span>
           <h3>Cytoplasmic Green</h3>
@@ -240,13 +243,7 @@
 
       <!-- Membrane Green -->
       <article class="line">
-        <div class="thumb">
-          <svg viewBox="0 0 200 150" aria-hidden="true">
-            <circle cx="100" cy="75" r="56" fill="#fff" stroke="#000" stroke-width="4"/>
-            <circle cx="100" cy="75" r="50" fill="none" stroke="#15a64a" stroke-width="9"/>
-            <circle cx="100" cy="75" r="18" fill="#fff" stroke="#000" stroke-width="3"/>
-          </svg>
-        </div>
+        <div class="thumb"></div>
         <div class="body">
           <span class="status soon"><span class="dot"></span>Coming soon</span>
           <h3>Membrane Green</h3>
@@ -256,19 +253,7 @@
 
       <!-- Mitochondria Green -->
       <article class="line">
-        <div class="thumb">
-          <svg viewBox="0 0 200 150" aria-hidden="true">
-            <circle cx="100" cy="75" r="56" fill="#fff" stroke="#000" stroke-width="4"/>
-            <circle cx="100" cy="75" r="17" fill="#fff" stroke="#000" stroke-width="3"/>
-            <g fill="#15a64a" stroke="#0c6e31" stroke-width="2">
-              <ellipse cx="72" cy="52" rx="11" ry="6" transform="rotate(-28 72 52)"/>
-              <ellipse cx="132" cy="58" rx="11" ry="6" transform="rotate(20 132 58)"/>
-              <ellipse cx="66" cy="96" rx="11" ry="6" transform="rotate(18 66 96)"/>
-              <ellipse cx="128" cy="102" rx="11" ry="6" transform="rotate(-22 128 102)"/>
-              <ellipse cx="100" cy="118" rx="11" ry="6" transform="rotate(6 100 118)"/>
-            </g>
-          </svg>
-        </div>
+        <div class="thumb"></div>
         <div class="body">
           <span class="status soon"><span class="dot"></span>Coming soon</span>
           <h3>Mitochondria Green</h3>
@@ -317,7 +302,7 @@
         <a class="btn email-btn" href="mailto:admin@gallusresources.org">admin@gallusresources.org</a>
       </div>
       <div class="contact-art">
-        <img src="contact-chicken.png" alt="A hen pecking at grain" />
+        <img src="contact-chicken.png" alt="A hen pecking at grain" loading="lazy" />
       </div>
     </div>
   </div>
@@ -325,18 +310,9 @@
 
 <footer>
   <div class="wrap">
-    <div class="foot-grid">
-      <div class="foot-brand">
-        <a class="brand" href="#top">
-          <svg class="mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="1.5" y="1.5" width="37" height="37" fill="#000"/>
-            <ellipse cx="20" cy="21.5" rx="10.5" ry="13" fill="#fff"/>
-            <circle cx="24.5" cy="15.5" r="3.1" fill="#007FFF"/>
-          </svg>
-          The Gallus Genetic Resource Center
-        </a>
-        <p>is a nonprofit based in Connecticut, keeping chicken lines available to researchers.</p>
-      </div>
+    <div class="foot-brand">
+      <a class="brand" href="#top">The Gallus Genetic Resource Center</a>
+      <p>is a nonprofit based in Connecticut, keeping chicken lines available to researchers.</p>
     </div>
     <div class="foot-bottom">
       <span>© <span id="yr"></span> Gallus Genetics Resource Center. All rights reserved.</span>
@@ -347,53 +323,6 @@
 
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
-
-  const BAYER = [
-     0,32, 8,40, 2,34,10,42,
-    48,16,56,24,50,18,58,26,
-    12,44, 4,36,14,46, 6,38,
-    60,28,52,20,62,30,54,22,
-     3,35,11,43, 1,33, 9,41,
-    51,19,59,27,49,17,57,25,
-    15,47, 7,39,13,45, 5,37,
-    63,31,55,23,61,29,53,21
-  ];
-  const jobs = [];
-  function dither(id, fn, ink, paper, block){
-    const c = document.getElementById(id); if(!c) return;
-    jobs.push({c, fn, ink, paper, block: block||3});
-  }
-  function render(job){
-    const {c, fn, ink, paper, block} = job;
-    const r = c.getBoundingClientRect();
-    if(r.width < 2 || r.height < 2) return;
-    const w = Math.max(1, Math.round(r.width / block));
-    const h = Math.max(1, Math.round(r.height / block));
-    c.width = w; c.height = h;
-    const ctx = c.getContext('2d');
-    const img = ctx.createImageData(w, h); const d = img.data;
-    for(let y=0;y<h;y++){ for(let x=0;x<w;x++){
-      let v = fn(x, y, w, h); if(v<0) v=0; else if(v>1) v=1;
-      const t = (BAYER[(y&7)*8 + (x&7)] + 0.5) / 64;
-      const col = v > t ? paper : ink;
-      const i = (y*w + x) * 4; d[i]=col[0]; d[i+1]=col[1]; d[i+2]=col[2]; d[i+3]=255;
-    }}
-    ctx.putImageData(img, 0, 0);
-  }
-  function renderAll(){ jobs.forEach(render); }
-  const BLACK=[0,0,0], WHITE=[255,255,255];
-
-  // Mission backdrop: sparse white dither on black, flowing across the band
-  dither('art-mission', (x,y,w,h)=>{
-    const a = Math.atan2(y-h*0.6, x-w*0.15);
-    const flow = 0.5 + 0.5*Math.sin(a*3 + (x*0.7 + y*0.9)*0.05);
-    const grad = x / w;
-    return 0.34 + 0.5*grad + 0.22*flow;
-  }, WHITE, BLACK, 3);
-
-  function boot(){ renderAll(); }
-  if(document.readyState==='complete') boot(); else window.addEventListener('load', boot);
-  let t; window.addEventListener('resize', ()=>{ clearTimeout(t); t=setTimeout(renderAll,150); });
 </script>
 </body>
 </html>
